@@ -20,5 +20,8 @@
     "dotenv": "^17.2.1",
     "ioredis": "^5.7.0",
     "redis-memory-server": "^0.12.1"
+  },
+  "redisMemoryServer": {
+    "disablePostinstall": "true"
   }
 }
