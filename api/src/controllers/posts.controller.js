@@ -2,7 +2,7 @@ const Posts = require("../models/posts.model");
 
 const listPosts = async (req, res) => {
   try {
-    const posts = await Posts.find();
+    const posts = await Posts.find({}, { createdAt: 0, updatedAt: 0 });
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch posts." });
@@ -12,7 +12,7 @@ const listPosts = async (req, res) => {
 const getPostById = async (req, res) => {
   try {
     const { id } = req.params;
-    const post = await Posts.findById(id);
+    const post = await Posts.findById(id, { createdAt: 0, updatedAt: 0 });
     if (!post) return res.status(404).json({ message: "Post not found" });
     res.status(200).json(post);
   } catch (error) {
@@ -21,7 +21,6 @@ const getPostById = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  console.log("Creating post with data:", req.body);
   try {
     const newPost = new Posts(req.body);
     await newPost.save();

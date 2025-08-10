@@ -2,7 +2,7 @@ const Comments = require("../models/comments.model");
 
 const listComments = async (req, res) => {
   try {
-    const comments = await Comments.find();
+    const comments = await Comments.find({}, { createdAt: 0, updatedAt: 0 });
     res.status(200).json(comments);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -12,7 +12,7 @@ const listComments = async (req, res) => {
 const getCommentsById = async (req, res) => {
   try {
     const { id } = req.params;
-    const comment = await Comments.findById(id);
+    const comment = await Comments.findById(id, { createdAt: 0, updatedAt: 0 });
     if (!comment) return res.status(404).json({ message: "Comment not found" });
     res.status(200).json(comment);
   } catch (err) {

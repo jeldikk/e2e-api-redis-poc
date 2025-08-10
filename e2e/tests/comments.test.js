@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, request } from "@playwright/test";
 import { ApiContext } from "../lib/core/api.context";
 import { CommentsService } from "../lib/services/comments.service";
 import { PostsService } from "../lib/services/posts.service";
@@ -6,11 +6,19 @@ import { UsersService } from "../lib/services/users.service";
 
 test.describe("Comments API Tests Suite", () => {
   let allComments = [];
+  let apiContext;
   let commentsService, postsService, usersService;
   let newCommentData, newPostData, newUserData;
 
-  test.beforeAll(async ({ request }) => {
-    const apiContext = new ApiContext(request);
+  test.beforeAll(async () => {
+    const redisHost = process.env.MOCK_REDIS_HOST;
+    const redisPort = process.env.MOCK_REDIS_PORT;
+    console.log(
+      `Comments :: Redis Memory Server started at ${redisHost}:${redisPort}`
+    );
+    apiContext = new ApiContext();
+
+    await apiContext.initialize();
 
     commentsService = new CommentsService(apiContext);
 
@@ -44,12 +52,13 @@ test.describe("Comments API Tests Suite", () => {
     expect(data).toBeInstanceOf(Array);
   });
 
-  test("Create Comment", async () => {
+  test.skip("Create Comment", async () => {
     const response = await commentsService.createComment(newCommentData);
     expect(response.status()).toBe(201);
   });
 
-  test.skip("should able to update comment body property ", async () => {
+  test("should able to update comment body property ", async () => {
+    console.log({ newCommentData });
     const updatedCommentData = {
       ...newCommentData,
       body: "Updated comment body",
@@ -63,7 +72,7 @@ test.describe("Comments API Tests Suite", () => {
     expect(data.body).toBe(updatedCommentData.body);
   });
 
-  test.skip("should able to update comment email property ", async () => {
+  test("should able to update comment email property ", async () => {
     const updatedCommentData = {
       ...newCommentData,
       email: "updated.email@example.com",

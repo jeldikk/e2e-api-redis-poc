@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.9.0",
+    "bullmq": "^5.56.9",
     "dotenv": "^17.2.1",
     "ioredis": "^5.7.0",
     "redis-memory-server": "^0.12.1"

@@ -2,7 +2,7 @@ const Users = require("../models/users.model");
 
 const listUsers = async (req, res) => {
   try {
-    const users = await Users.find();
+    const users = await Users.find({}, { createdAt: 0, updatedAt: 0 });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch users." });
@@ -12,7 +12,7 @@ const listUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await Users.findById(id);
+    const user = await Users.findById(id, { createdAt: 0, updatedAt: 0 });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
