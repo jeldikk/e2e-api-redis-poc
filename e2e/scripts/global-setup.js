@@ -1,10 +1,4 @@
-import { RedisMemoryServer } from "redis-memory-server";
-
-export const redisServer = new RedisMemoryServer({
-  instance: {
-    port: 54345, // Specify the port you want to use
-  },
-});
+import { redisServer } from "../lib/redis/connection";
 
 export default async function globalSetup() {
   console.log("Starting Redis Memory Server...");
